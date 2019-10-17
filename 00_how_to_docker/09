@@ -1,0 +1,9 @@
+apt -y update && apt -y install build-essential && apt -y install vim && apt -y install git
+mkdir dir_to_push && cd dir_to_push
+vim main.c
+git init
+git add *
+git config --global user.email “my@email.com”
+git config --global user.name “my_github_login”
+git remote add origin “https://github.com/my_github_login/my_github_repo.git”
+git push -u origin master
