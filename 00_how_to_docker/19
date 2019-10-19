@@ -1,0 +1,24 @@
+docker run --name Abathur -v ~/:/root -p 3000:3000 -d -it python:2-slim
+docker exec Abathur pip install flask
+docker exec Abathur pip install --upgrade pip
+echo "from flask import Flask, render_template
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return render_template('hello_world.html')
+
+    if __name__ == '__main__':
+        app.run(debug=True,host='0.0.0.0')" > ~/app.py
+mkdir templates && cd templates
+echo "<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset='utf-8'>
+	</head>
+	<body>
+	<h1> Hello World </h1>
+	</body>
+</html>" > ~/templates/hello_world.html
+docker exec -e FLASK_APP=/root/app.py Abathur flask run -h 0.0.0.0 -p 3000
+
