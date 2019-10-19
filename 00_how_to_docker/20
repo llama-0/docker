@@ -1,0 +1,2 @@
+docker swarm init --advertise-addr eth1:2377
+docker swarm join-token manager
