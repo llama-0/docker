@@ -1,0 +1,18 @@
+FROM ruby:2.6.5-alpine
+
+RUN apk update && apk upgrade && apk add --update --no-cache \
+	build-base \
+	yarn \
+	sqlite-dev \
+	nodejs \
+	tzdata \
+	&& rm -rf  /var/cache/apk/*
+		
+ONBUILD WORKDIR /opt/app
+ONBUILD COPY myapp /opt/app
+
+ONBUILD RUN bundle install
+ONBUILD RUN yarn install
+
+ONBUILD RUN rake db:migrate
+ONBUILD RUN rake db:seed
