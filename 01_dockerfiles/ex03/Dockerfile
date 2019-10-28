@@ -4,6 +4,7 @@ RUN apt-get update -y && \
 	apt-get upgrade -y && \
 	apt-get install sudo -y \
 		curl \
+		tzdata \
 		openssh-server \
 		ca-certificates \
 		postfix && \
@@ -12,19 +13,8 @@ RUN apt-get update -y && \
 EXPOSE 80 443 22
 
 RUN	sudo apt-get install -y gitlab-ce && \
-	sudo echo 'external_url "https://koparker.com"' >> /etc/gitlab/gitlab.rb && \
-	sudo echo 'nginx['redirect_http_to_https'] = true' >> /etc/gitlab/gitlab.rb && \
-	sudo echo 'nginx['ssl_certificate'] = "/etc/gitlab/ssl/koparker.com.crt"' >> /etc/gitlab/gitlab.rb && \
-	sudo echo 'nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/koparker.com.key"' >> /etc/gitlab/gitlab.rb && \
-	sudo mkdir -p /etc/gitlab/ssl && \
-	sudo chmod 700 /etc/gitlab/ssl
+	apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY koparker.com.crt /etc/gitlab/ssl/koparker.com.crt
-
-COPY koparker.com.key /etc/gitlab/ssl/koparker.com.key
-
-ENTRYPOINT cat -n /etc/gitlab/gitlab.rb && \
-	service ssh start && \
-	(/opt/gitlab/embedded/bin/runsvdir-start &) && \
+ENTRYPOINT (/opt/gitlab/embedded/bin/runsvdir-start &) && \
 	sudo gitlab-ctl reconfigure && \
 	tail -f /dev/null
