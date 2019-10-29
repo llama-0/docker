@@ -12,3 +12,7 @@ RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 WORKDIR /home/projects
+
+# build and run:
+
+# docker build -t rust . && docker run --rm -it rust

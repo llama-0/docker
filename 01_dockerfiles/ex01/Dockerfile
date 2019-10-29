@@ -17,3 +17,8 @@ RUN echo "license_accepted=1" > /koparker/teamspeak/.ts3server_license_accepted
 EXPOSE 9987/udp 10011 30033
 
 ENTRYPOINT ["/koparker/teamspeak/ts3server_minimal_runscript.sh"]
+
+# build:	docker build --tag teamspeak .
+# run:		docker run --rm -it -p 9987:9987/upd -p 10011:10011 -p 30033:30033 teamspeak bash
+
+# open teamspeak client on your host machine to test connection

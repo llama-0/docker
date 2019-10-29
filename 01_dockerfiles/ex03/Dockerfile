@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-#ARG URL
+ARG URL="0.0.0.0"
 
 RUN apt-get update -y && \
 	apt-get upgrade -y && \
@@ -12,12 +12,10 @@ RUN apt-get update -y && \
 		postfix && \
 		curl -s https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
 
-#ENV EXT_URL http://$URL
-
-#RUN echo "var == $EXT_URL"
+ENV EXT_URL $URL
 
 RUN	sudo apt-get install -y gitlab-ce && \
-	sudo echo 'external_url "http://192.168.99.102"' >> /etc/gitlab/gitlab.rb && \
+	sudo echo "external_url \"http://${EXT_URL}\"" >> /etc/gitlab/gitlab.rb && \
 	sudo mkdir -p /etc/gitlab/ssl && \
 	sudo chmod 700 /etc/gitlab/ssl
 
@@ -32,3 +30,11 @@ EXPOSE 80 443 22
 ENTRYPOINT (/opt/gitlab/embedded/bin/runsvdir-start &) && \
 	sudo gitlab-ctl reconfigure && \
 	tail -f /dev/null
+
+# to build an image:
+
+# export URL=$(docker-machine ip Char); docker build --build-arg URL -t gitlab .
+
+# to run the container:
+
+# docker run --rm -it -p 2222:22 -p 443:443 -p 80:80 --privileged gitlab

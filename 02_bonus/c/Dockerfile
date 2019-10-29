@@ -7,3 +7,6 @@ RUN apk update && \
 		vim
 
 WORKDIR /home/projects
+
+# build and run:
+# docker build -t c . && docker run --rm -it c
