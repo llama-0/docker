@@ -1,0 +1,3 @@
+#!/bin/sh
+docker build -t star_wars .
+docker run --rm -it star_wars bash
