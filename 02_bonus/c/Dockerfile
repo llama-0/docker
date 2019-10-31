@@ -1,8 +1,8 @@
 FROM alpine
 
 RUN apk update && \
-	apk upgrade && \
-	apk add \
+	apk upgrade -y && \
+	apk add -y \
 		build-base \
 		vim
 
